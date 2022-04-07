@@ -1,0 +1,23 @@
+#!/bin/bash
+
+function printerr
+{
+  echo $1
+  echo "Usage: source gpu_select [comma separated gpu indexes]"
+  echo "  e.g. source gpu_select 0,1 or source gpu_select -1 for none"
+  echo -n "Available devices: "
+  echo $(nvidia-smi --query-gpu=index --format=csv,noheader)
+}
+
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]
+then
+  if [ -z "$1" ]
+  then
+    printerr "Error: no devices specified."
+  else
+    export CUDA_VISIBLE_DEVICES=$1
+    echo "Cuda visible devices set to $1"
+  fi
+else
+  printerr "Error: this script has to be sourced."
+fi

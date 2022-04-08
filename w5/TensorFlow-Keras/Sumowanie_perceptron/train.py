@@ -12,7 +12,7 @@ import argparse
 if __name__ == '__main__':
 
     # Hyperparameters defaults
-    EPOCHS = 1000
+    EPOCHS = 100
     SPLIT = 0.2
     LEARNING_RATE = 0.1
     ACTIVATION = 'tanh'
@@ -48,8 +48,9 @@ if __name__ == '__main__':
     data = np.loadtxt(input_filename, delimiter=",")
 
     # Data normalization
-    max_value = np.max(data)
-    data /= max_value
+    max_val = np.max(data)
+    min_val = np.min(data)
+    data = (data - min_val) / (max_val - min_val)
 
     # Divide into X and Y vectors
     Nin = data.shape[1] - 1

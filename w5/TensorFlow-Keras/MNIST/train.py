@@ -54,7 +54,7 @@ H = model.fit(Xtrain, Ytrain, epochs=EPOCHS, validation_split=SPLIT)
 
 # Evaluate the model
 print("Test score (loss and accuracy):")
-test_score = model.evaluate(Xtest, Ytest)
+model.evaluate(Xtest, Ytest)
 
 # Save model to file
 model.save("model.h5")

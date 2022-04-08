@@ -4,13 +4,16 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import numpy as np
 from tensorflow.keras.models import load_model
+from tensorflow.keras.metrics import RootMeanSquaredError
+from tensorflow_addons.metrics.r_square import RSquare
 import argparse
 
 
 if __name__ == '__main__':
 
-    # Max value for normalization
-    MAX_VALUE = 10.0
+    # Max and min values for normalization
+    MAX_VAL = 10.0
+    MIN_VAL = 0
 
     # Parse the arguments. 
     # They can be also read from a file (@file.par)
@@ -29,7 +32,7 @@ if __name__ == '__main__':
     data = np.loadtxt(test_dataset_filename, delimiter=",")
 
     # Normalize data
-    data /= MAX_VALUE
+    data = (data - MIN_VAL) / (MAX_VAL - MIN_VAL)
 
     # Divide into X and Y vectors
     Nin = data.shape[1] - 1
@@ -43,12 +46,23 @@ if __name__ == '__main__':
     # Calculate predictions
     Ypredicted = model.predict(X)
 
-    print("Test results:")
-    # Print results (multiplied by MAX_VALUE as "unnormalization")
-    for i in range(len(Ypredicted)):
-        print('{} + {} = {:.3f} (expected {})'
-                .format(X[i,0]*MAX_VALUE,
-                        X[i,1]*MAX_VALUE,
-                        Ypredicted[i,0]*MAX_VALUE,
-                        Y[i,0]*MAX_VALUE))
+    # Metrics
+    metric_rmse = RootMeanSquaredError()
+    metric_r_squared = RSquare()
+    metric_rmse.update_state(Y[:,0], Ypredicted[:,0])
+    metric_r_squared.update_state(Y[:,0], Ypredicted[:,0])
 
+    # "Unnormalization"
+    Ypredicted = MIN_VAL + Y * (MAX_VAL - MIN_VAL)
+
+    print("Test results:")
+    for i in range(len(Ypredicted)):
+        print('{:.3f} + {:.3f} = {:.3f} (expected {:.3f})'
+                .format(X[i,0],
+                        X[i,1],
+                        Ypredicted[i,0],
+                        Y[i,0]))
+
+    print("RMSE = {:.3f}, R^2 = {:.3f}".format(metric_rmse.result().numpy(), 
+                                               metric_r_squared.result().numpy()))
+    

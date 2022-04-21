@@ -1,0 +1,18 @@
+Filename: 3_generators_memory_profiling.py
+
+Line #    Mem usage    Increment  Occurences   Line Contents
+============================================================
+     9     39.6 MiB     39.6 MiB           1   @profile(stream=fp)
+    10                                         def list_f():
+    11    426.1 MiB    323.8 MiB    10000003       return [i for i in range(MAX_RANGE)]    
+
+
+Filename: 3_generators_memory_profiling.py
+
+Line #    Mem usage    Increment  Occurences   Line Contents
+============================================================
+    13    426.1 MiB    426.1 MiB           1   @profile(stream=fp)
+    14                                         def generator_f():
+    15    426.1 MiB      0.0 MiB           1       return (i for i in range(MAX_RANGE))
+
+

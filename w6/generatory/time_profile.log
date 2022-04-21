@@ -1,0 +1,4 @@
+Creating list: 0.04328490000000007 secs.
+Iterating over list: 1.3783704 secs.
+Creating generator: 6.900000000253925e-06 secs.
+Iterating over generator: 2.2687469000000005 secs.

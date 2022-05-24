@@ -1,0 +1,8 @@
+--dataset=Al2O3.txt
+--layers=9 sigmoid 7 sigmoid 1 sigmoid
+--optimizer=adam
+--epochs=100
+--y_min_factor=0.1
+--y_max_factor=0.05
+--keep_weights
+--batch_size=-1
